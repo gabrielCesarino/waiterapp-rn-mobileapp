@@ -16,6 +16,9 @@ export default function App() {
 	}
 
 	return (
+		<>
+		<StatusBar style='dark'/>
 		<Main />
+		</>
 	)
 }
