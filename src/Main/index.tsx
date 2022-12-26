@@ -1,7 +1,7 @@
 import { Categories } from '../components/Categories';
 import { Header } from '../components/Header';
 import { Menu } from '../components/Menu';
-import { Text } from '../components/Text';
+import { Button } from '../components/Button';
 import { Container, CategoriesContainer, MenuContainer, Footer, FooterContainer } from './styles';
 
 export function Main() {
@@ -16,11 +16,11 @@ export function Main() {
 				<MenuContainer>
 					<Menu />
 				</MenuContainer>
-				
+
 			</Container>
 			<Footer>
 				<FooterContainer>
-
+					<Button onPress={() => alert('novo pedido')} disabled>Novo pedido</Button>
 				</FooterContainer>
 			</Footer>
 		</>
