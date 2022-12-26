@@ -20,7 +20,7 @@ export function Main() {
 			</Container>
 			<Footer>
 				<FooterContainer>
-					<Button onPress={() => alert('novo pedido')} disabled>Novo pedido</Button>
+					<Button onPress={() => alert('novo pedido')}>Novo pedido</Button>
 				</FooterContainer>
 			</Footer>
 		</>

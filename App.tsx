@@ -1,7 +1,9 @@
 import { useFonts } from 'expo-font';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View } from 'react-native';
-import { Text } from './src/components/Text';
+
+import 'intl';
+import 'intl/locale-data/jsonp/pt-BR';
+
 import { Main } from './src/Main';
 
 export default function App() {
