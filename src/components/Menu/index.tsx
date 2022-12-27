@@ -6,7 +6,8 @@ import { PlusCircle } from "../Icons/PlusCircle";
 import { ProductModal } from "../ProductModal";
 import { Text } from "../Text";
 
-import { Product, ProductImage, ProductDetails, Separator, AddToCartButton } from './styles'
+import { ProductContainer, ProductImage, ProductDetails, Separator, AddToCartButton } from './styles'
+import { Product } from "../../types/Product";
 
 export function Menu() {
 
@@ -16,13 +17,19 @@ export function Menu() {
 	)
 
 	const [isProductModalVisible, setIsProductModalVisible] = useState(false);
+	const [selectedProduct, setSelectedProduct] = useState<null | Product>(null);
 
+	function handleOpenProductModal(product: Product) {
+		setIsProductModalVisible(true);
+		setSelectedProduct(product);
+	}
 
 	return (
 		<>
 			<ProductModal
 				visible={isProductModalVisible}
 				onClose={() => setIsProductModalVisible(false)}
+				product={selectedProduct}
 			/>
 
 			<FlatList
@@ -32,7 +39,7 @@ export function Menu() {
 				ItemSeparatorComponent={Separator}
 				keyExtractor={(product) => product._id}
 				renderItem={({ item: product }) => (
-					<Product onPress={() => setIsProductModalVisible(true)}>
+					<ProductContainer onPress={() => handleOpenProductModal(product)}>
 						<ProductImage
 							source={{
 								uri: `http://192.168.1.100:3002/uploads/${product.imagePath}`
@@ -49,7 +56,7 @@ export function Menu() {
 						<AddToCartButton>
 							<PlusCircle />
 						</AddToCartButton>
-					</Product>
+					</ProductContainer>
 				)}
 			/>
 		</>
