@@ -9,16 +9,22 @@ import { ModalBody, Overlay, Header, Form, Input } from "./styles";
 interface TableModalProps {
 	visible: boolean;
 	onClose: () => void;
+	onSave: (table: string) => void;
 }
 
-export function TableModal({ visible, onClose }: TableModalProps) {
+export function TableModal({ visible, onClose, onSave }: TableModalProps) {
 	const [table, setTable] = useState('');
+	function handleSave() {
+		onSave(table);
+		onClose();
+	}
 
 	return (
 		<Modal
 			transparent
 			visible={visible}
 			animationType="fade"
+			
 		>
 			<Overlay behavior={Platform.OS === 'android' ? 'height' : 'padding'}>
 				<ModalBody>
@@ -36,7 +42,7 @@ export function TableModal({ visible, onClose }: TableModalProps) {
 							keyboardType="number-pad"
 							onChangeText={setTable}
 							/>
-						<Button onPress={() => alert(table)} disabled={table.length === 0}>
+						<Button onPress={() => handleSave()} disabled={table.length === 0}>
 							Salvar
 						</Button>
 					</Form>
