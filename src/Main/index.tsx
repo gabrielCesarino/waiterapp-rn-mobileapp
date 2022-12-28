@@ -1,5 +1,4 @@
 import { ActivityIndicator } from 'react-native';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 import { Categories } from '../components/Categories';
@@ -17,24 +16,26 @@ import { Product } from '../types/Product';
 import { Empty } from '../components/Icons/Empty';
 import { Text } from '../components/Text';
 import { Category } from '../types/Category';
+import { api } from '../utils/api';
 
 export function Main() {
 	const [isTableModalVisible, setIsTableModalVisible] = useState(false);
 	const [selectedTable, setSelectedTable] = useState('');
 	const [cartItems, setCartItems] = useState<CartItem[]>([]);
-	const [isLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 	const [products, setProducts] = useState<Product[]>([]);
 	const [categories, setCategories] = useState<Category[]>([]);
 
 	useEffect(() => {
-		axios.get('http://192.168.1.100:3002/categories').then((response) => {
-			setCategories(response.data);
-		});
 
-		axios.get('http://192.168.1.100:3002/products').then((response) => {
-			setProducts(response.data);
+		Promise.all([
+			api.get('/categories'),
+			api.get('/products'),
+		]).then(([categoriesResponse, productsResponse]) => {
+			setCategories(categoriesResponse.data);
+			setProducts(productsResponse.data);
+			setIsLoading(false);
 		});
-
 	}, []);
 
 
@@ -42,14 +43,14 @@ export function Main() {
 		setSelectedTable(table);
 	}
 
-	function handleCleanOrder(){
+	function handleCleanOrder() {
 		setSelectedTable('');
 		setCartItems([]);
 	}
 
 
 	function handleAddToCart(product: Product) {
-		if(!selectedTable) {
+		if (!selectedTable) {
 			setIsTableModalVisible(true);
 		}
 
@@ -83,7 +84,7 @@ export function Main() {
 			const newCartItems = [...prevState];
 
 
-			if(item.quantity === 1) {
+			if (item.quantity === 1) {
 				newCartItems.splice(itemIndex, 1);
 
 				return newCartItems;
@@ -101,17 +102,17 @@ export function Main() {
 	return (
 		<>
 			<Container>
-				<Header selectedTable={selectedTable} onCancelOrder={handleCleanOrder}/>
+				<Header selectedTable={selectedTable} onCancelOrder={handleCleanOrder} />
 				{isLoading &&
-					<CenteredContainer>
-						<ActivityIndicator color="#d73035" size="large"/>
-					</CenteredContainer>
+				<CenteredContainer>
+					<ActivityIndicator color="#d73035" size="large" />
+				</CenteredContainer>
 				}
 
 				{!isLoading && (
 					<>
 						<CategoriesContainer>
-							<Categories categories={categories}/>
+							<Categories categories={categories} />
 						</CategoriesContainer>
 
 						{products.length > 0 ? (
@@ -124,7 +125,7 @@ export function Main() {
 						) : (
 							<CenteredContainer>
 								<Empty />
-								<Text color="#665" style={{ marginTop: 24}}>Nenhum produto foi encontrado!</Text>
+								<Text color="#665" style={{ marginTop: 24 }}>Nenhum produto foi encontrado!</Text>
 							</CenteredContainer>
 						)}
 					</>
