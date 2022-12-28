@@ -1,7 +1,6 @@
 import { FlatList } from 'react-native';
 import { useState } from 'react';
 
-import { products } from '../../mocks/products';
 import { PlusCircle } from '../Icons/PlusCircle';
 import { ProductModal } from '../ProductModal';
 import { Text } from '../Text';
@@ -11,9 +10,10 @@ import { Product } from '../../types/Product';
 
 interface MenuProps {
 	onAddToCart: (product: Product) => void;
+	products: Product[];
 }
 
-export function Menu({ onAddToCart}: MenuProps) {
+export function Menu({ onAddToCart, products}: MenuProps) {
 
 	const formatCurrency = new Intl.NumberFormat(
 		'pt-br',
