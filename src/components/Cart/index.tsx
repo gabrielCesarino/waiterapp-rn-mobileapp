@@ -18,16 +18,18 @@ import {
 	Summary,
 	TotalContainer
 } from './styles';
+import { api } from '../../utils/api';
 
 interface CartProps {
 	cartItems: CartItem[];
 	onAdd: (product: Product) => void;
 	onDecrement: (product: Product) => void;
 	onConfirmOrder: () => void;
+	selectedTable: string;
 }
 
-export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProps) {
-	const [isLoading] = useState(false);
+export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder, selectedTable }: CartProps) {
+	const [isLoading, setIsLoading] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const formatCurrency = new Intl.NumberFormat(
 		'pt-br',
@@ -38,7 +40,18 @@ export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProp
 		return acc + cartItem.quantity * cartItem.product.price;
 	}, 0);
 
-	function handleConfirmOrder() {
+	async function handleConfirmOrder() {
+		setIsLoading(true);
+		const payload = {
+			table: selectedTable,
+			products: cartItems.map((item) => ({
+				product: item.product._id,
+				quantity: item.quantity
+			}))
+		};
+
+		await api.post('/orders', payload);
+		setIsLoading(true);
 		setIsModalVisible(true);
 	}
 
