@@ -25,7 +25,7 @@ export function ProductModal({ visible, onClose, product,onAddToCart }: ProductM
 	}
 
 	function handleAddToCart(){
-		onAddToCart(product);
+		onAddToCart(product!);
 		onClose();
 	}
 
