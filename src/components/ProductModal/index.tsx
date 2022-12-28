@@ -9,18 +9,24 @@ interface ProductModalProps {
 	visible: boolean;
 	onClose: () => void;
 	product: null | Product;
+	onAddToCart: (product: Product) => void;
 }
 
 
-export function ProductModal({ visible, onClose, product }: ProductModalProps) {
+export function ProductModal({ visible, onClose, product,onAddToCart }: ProductModalProps) {
 
 	const formatCurrency = new Intl.NumberFormat(
 		'pt-br',
 		{ style: 'currency', currency: 'BRL' }
-	)
+	);
 
 	if (!product) {
 		return null;
+	}
+
+	function handleAddToCart(){
+		onAddToCart(product);
+		onClose();
 	}
 
 	return (
@@ -67,9 +73,9 @@ export function ProductModal({ visible, onClose, product }: ProductModalProps) {
 						<Text color='#665'>Preço</Text>
 						<Text size={20} weight='600'>{formatCurrency.format(product.price)}</Text>
 					</Price>
-					<Button onPress={() => alert('Adicionar ao pedido')}>Adicionar ao pedido</Button>
+					<Button onPress={handleAddToCart}>Adicionar ao pedido</Button>
 				</Footer>
 			</FooterContainer>
 		</Modal>
-	)
+	);
 }
