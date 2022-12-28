@@ -27,6 +27,7 @@ interface CartProps {
 }
 
 export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProps) {
+	const [isLoading] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const formatCurrency = new Intl.NumberFormat(
 		'pt-br',
@@ -104,6 +105,7 @@ export function Cart({ cartItems, onAdd, onDecrement, onConfirmOrder }: CartProp
 				<Button
 					disabled={cartItems.length === 0}
 					onPress={handleConfirmOrder}
+					loading={isLoading}
 				>
 					Confirmar pedido
 				</Button>
